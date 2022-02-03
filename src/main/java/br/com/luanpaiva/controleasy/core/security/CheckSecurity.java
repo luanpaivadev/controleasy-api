@@ -11,25 +11,25 @@ public @interface CheckSecurity {
 
     public @interface Empresa {
 
-        @PreAuthorize("hasAuthority('ALLOWS_CONSULT_EMPRESA')")
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('ALLOWS_CONSULT_EMPRESA')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeConsultar {
         }
 
-        @PreAuthorize("hasAuthority('ALLOWS_REGISTER_EMPRESA')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('ALLOWS_REGISTER_EMPRESA')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeCadastrar {
         }
 
-        @PreAuthorize("hasAuthority('ALLOWS_UPDATE_EMPRESA')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('ALLOWS_UPDATE_EMPRESA')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeAtualizar {
         }
 
-        @PreAuthorize("hasAuthority('ALLOWS_DELETE_EMPRESA')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('ALLOWS_DELETE_EMPRESA')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeDeletar {
@@ -39,25 +39,25 @@ public @interface CheckSecurity {
 
     public @interface Funcionario {
 
-        @PreAuthorize("hasAuthority('ALLOWS_CONSULT_FUNCIONARIO')")
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('ALLOWS_CONSULT_FUNCIONARIO')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeConsultar {
         }
 
-        @PreAuthorize("hasAuthority('ALLOWS_REGISTER_FUNCIONARIO')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('ALLOWS_REGISTER_FUNCIONARIO')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeCadastrar {
         }
 
-        @PreAuthorize("hasAuthority('ALLOWS_UPDATE_FUNCIONARIO')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('ALLOWS_UPDATE_FUNCIONARIO')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeAtualizar {
         }
 
-        @PreAuthorize("hasAuthority('ALLOWS_DELETE_FUNCIONARIO')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('ALLOWS_DELETE_FUNCIONARIO')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeDeletar {
@@ -67,25 +67,25 @@ public @interface CheckSecurity {
 
     public @interface Ponto {
 
-        @PreAuthorize("hasAuthority('ALLOWS_CONSULT_PONTO')")
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('ALLOWS_CONSULT_PONTO')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeConsultar {
         }
 
-        @PreAuthorize("hasAuthority('ALLOWS_REGISTER_PONTO')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('ALLOWS_REGISTER_PONTO')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeCadastrar {
         }
 
-        @PreAuthorize("hasAuthority('ALLOWS_UPDATE_PONTO')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('ALLOWS_UPDATE_PONTO')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeAtualizar {
         }
 
-        @PreAuthorize("hasAuthority('ALLOWS_DELETE_PONTO')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('ALLOWS_DELETE_PONTO')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface PodeDeletar {

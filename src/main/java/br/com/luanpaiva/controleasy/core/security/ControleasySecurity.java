@@ -16,4 +16,5 @@ public class ControleasySecurity {
         Jwt jwt = (Jwt) getAuthentication().getPrincipal();
         return jwt.getClaim("funcionarioId");
     }
+    
 }
