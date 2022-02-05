@@ -30,7 +30,7 @@ INSERT INTO funcionario_grupo (`funcionario_id`, `grupo_id`) VALUES (1, 1), (2, 
 -- OAUTH_CLIENT_DETAILS
 
 INSERT INTO oauth_client_details (`client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`) VALUES 
-('controleasy-app', null, '$2a$12$sQqnwXjBfvRRC2hLRaeW.OC9TwSU5M/./vnrV6QkG9W4LEq2ot9xq', 'READ,WRITE', 'password', null, null, '300', '600', null, null);
+('controleasy-app', null, '$2a$12$sQqnwXjBfvRRC2hLRaeW.OC9TwSU5M/./vnrV6QkG9W4LEq2ot9xq', 'READ,WRITE', 'password,refresh_token', null, null, '300', '600', null, null);
 
 INSERT INTO oauth_client_details (`client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`) VALUES 
 ('controleasy-analytics', null, '$2a$12$sQqnwXjBfvRRC2hLRaeW.OC9TwSU5M/./vnrV6QkG9W4LEq2ot9xq', 'READ,WRITE', 'authorization_code', 'http://www.controleasy-analytics.local:8082', null, '300', '600', null, null);
