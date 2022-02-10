@@ -28,7 +28,11 @@ import br.com.app.controleasy.core.security.CheckSecurity;
 import br.com.app.controleasy.domain.exception.EntidadeNaoEncontradaException;
 import br.com.app.controleasy.domain.repository.PontoRepository;
 import br.com.app.controleasy.domain.service.PontoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
+@Api(tags = "Pontos")
 @RestController
 @RequestMapping("/v1/pontos")
 public class PontoController {
@@ -49,6 +53,7 @@ public class PontoController {
 	@Autowired
 	private PontoDTODisassembler pontoDTODisassembler;
 
+	@ApiOperation("Retorna uma lista com todos os registros de ponto")
 	@GetMapping
 	@CheckSecurity.Ponto.PodeConsultar
 	public ResponseEntity<List<PontoDTO>> findAll() {
@@ -60,9 +65,10 @@ public class PontoController {
 		return ResponseEntity.notFound().build();
 	}
 
+	@ApiOperation("Retorna o registro do ponto com base no ID")
 	@GetMapping("/{pontoId}")
 	@CheckSecurity.Ponto.PodeConsultar
-	public ResponseEntity<PontoDTO> findById(@PathVariable Long pontoId) {
+	public ResponseEntity<PontoDTO> findById(@ApiParam("ID do ponto") @PathVariable Long pontoId) {
 		var result = pontoRepository.findById(pontoId);
 
 		if (result.isPresent()) {
@@ -73,6 +79,7 @@ public class PontoController {
 		return ResponseEntity.notFound().build();
 	}
 
+	@ApiOperation("Retorna o registro do ponto com base na data e ID do funcionário")
 	@GetMapping("/ponto-data-funcionario")
 	@CheckSecurity.Ponto.PodeConsultar
 	public ResponseEntity<?> findByDataAndFuncionarioId(final String localDate, final String funcionarioId) {
@@ -94,6 +101,7 @@ public class PontoController {
 
 	}
 
+	@ApiOperation("Retorna uma lista de registros de ponto com base no período e ID do funcionário")
 	@GetMapping("/ponto-por-periodo-funcionario")
 	@CheckSecurity.Ponto.PodeConsultar
 	public ResponseEntity<List<PontoDTO>> findByDataBetweenAndFuncionarioIdOrderByData(final String dataInicio,
@@ -115,6 +123,7 @@ public class PontoController {
 
 	}
 
+	@ApiOperation("Salva um novo registro de ponto")
 	@PostMapping()
 	@CheckSecurity.Ponto.PodeCadastrar
 	public ResponseEntity<?> save(@Valid @RequestBody PontoInput pontoInput) {
@@ -133,9 +142,10 @@ public class PontoController {
 		}
 	}
 
+	@ApiOperation("Atualiza um registro de ponto com base no ID")
 	@PutMapping("/{pontoId}")
 	@CheckSecurity.Ponto.PodeAtualizar
-	public ResponseEntity<?> update(@PathVariable Long pontoId, @Valid @RequestBody PontoInput pontoInput) {
+	public ResponseEntity<?> update(@ApiParam("ID do ponto") @PathVariable Long pontoId, @Valid @RequestBody PontoInput pontoInput) {
 		try {
 			var result = pontoRepository.findById(pontoId);
 			if (result.isPresent()) {
@@ -155,9 +165,10 @@ public class PontoController {
 		}
 	}
 
+	@ApiOperation("Deleta um registro de ponto com base no ID")
 	@DeleteMapping("/{pontoId}")
 	@CheckSecurity.Ponto.PodeDeletar
-	public ResponseEntity<?> delete(@PathVariable Long pontoId) {
+	public ResponseEntity<?> delete(@ApiParam("ID do ponto") @PathVariable Long pontoId) {
 		return null;
 	}
 

@@ -24,7 +24,11 @@ import br.com.app.controleasy.api.v1.model.input.EmpresaInput;
 import br.com.app.controleasy.core.security.CheckSecurity;
 import br.com.app.controleasy.domain.repository.EmpresaRepository;
 import br.com.app.controleasy.domain.service.EmpresaService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
+@Api(tags = "Empresas")
 @RestController
 @RequestMapping("/v1/empresas")
 public class EmpresaController {
@@ -41,6 +45,7 @@ public class EmpresaController {
 	@Autowired
 	private EmpresaDTODisassembler empresaDTODisassembler;
 
+	@ApiOperation("Retorna uma lista com todas as empresas cadastradas")
 	@GetMapping
 	@CheckSecurity.Empresa.PodeConsultar
 	public ResponseEntity<List<EmpresaDTO>> findAll() {
@@ -52,9 +57,10 @@ public class EmpresaController {
 		return ResponseEntity.notFound().build();
 	}
 
+	@ApiOperation("Retorna o cadastro da empresa com base no ID")
 	@GetMapping("/{empresaId}")
 	@CheckSecurity.Empresa.PodeConsultar
-	public ResponseEntity<EmpresaDTO> findById(@PathVariable Long empresaId) {
+	public ResponseEntity<EmpresaDTO> findById(@ApiParam("ID da empresa") @PathVariable Long empresaId) {
 		var result = empresaRepository.findById(empresaId);
 		if (result.isPresent()) {
 			var empresa = result.get();
@@ -64,9 +70,10 @@ public class EmpresaController {
 		return ResponseEntity.notFound().build();
 	}
 
+	@ApiOperation("Salva um novo registro de empresa")
 	@PostMapping
 	@CheckSecurity.Empresa.PodeCadastrar
-	public ResponseEntity<?> save(@Valid @RequestBody EmpresaInput empresaInput) {
+	public ResponseEntity<?> save(@RequestBody @Valid EmpresaInput empresaInput) {
 		try {
 			var empresa = empresaDTODisassembler.toDomainObject(empresaInput);
 			if (!empresaRepository.existsByCnpj(empresa.getCnpj())) {
@@ -80,9 +87,10 @@ public class EmpresaController {
 		}
 	}
 
+	@ApiOperation("Atualiza o cadastro da empresa com base no ID")
 	@PutMapping("/{empresaId}")
 	@CheckSecurity.Empresa.PodeAtualizar
-	public ResponseEntity<?> update(@PathVariable Long empresaId, @Valid @RequestBody EmpresaInput empresaInput) {
+	public ResponseEntity<?> update(@ApiParam("ID da empresa") @PathVariable Long empresaId, @RequestBody @Valid EmpresaInput empresaInput) {
 		try {
 			var result = empresaRepository.findById(empresaId);
 			if (result.isPresent()) {
@@ -102,10 +110,11 @@ public class EmpresaController {
 		}
 	}
 
+	@ApiOperation("Deleta o cadastro da empresa com base no ID")
 	@DeleteMapping("/{empresaId}")
 	@CheckSecurity.Empresa.PodeDeletar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long empresaId) {
+	public void delete(@ApiParam("ID da empresa") @PathVariable Long empresaId) {
 		empresaService.delete(empresaId);
 	}
 
