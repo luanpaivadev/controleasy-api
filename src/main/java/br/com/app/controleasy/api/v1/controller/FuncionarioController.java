@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.app.controleasy.api.v1.assembler.FuncionarioDTOAssembler;
@@ -147,18 +148,9 @@ public class FuncionarioController {
 	@ApiOperation("Deleta o cadastro do funcionário com base no ID")
 	@DeleteMapping("/{funcionarioId}")
 	@CheckSecurity.Funcionario.PodeDeletar
-	public ResponseEntity<?> delete(@ApiParam("ID do funcionário") @PathVariable Long funcionarioId) {
-		try {
-			var result = funcionarioRepository.findById(funcionarioId);
-			if (result.isPresent()) {
-				var funcionario = result.get();
-				funcionarioService.delete(funcionario);
-				return ResponseEntity.noContent().build();
-			}
-			return ResponseEntity.notFound().build();
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void delete(@ApiParam("ID do funcionário") @PathVariable Long funcionarioId) {
+		funcionarioService.delete(funcionarioId);
 	}
 
 }

@@ -6,7 +6,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.app.controleasy.domain.exception.EmpresaNaoEncontradaException;
 import br.com.app.controleasy.domain.exception.EntidadeEmUsoException;
 import br.com.app.controleasy.domain.model.Empresa;
 import br.com.app.controleasy.domain.repository.EmpresaRepository;
@@ -28,9 +27,9 @@ public class EmpresaService {
 			empresaRepository.deleteById(empresaId);
 			empresaRepository.flush();
 		} catch (EmptyResultDataAccessException e) {
-			throw new EmpresaNaoEncontradaException(empresaId);
-		} catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException("Não é possível deletar a empresa de id " + empresaId);
+			throw new EntidadeEmUsoException("Não existe um registro de empresa com id " + empresaId);
+		} catch (DataIntegrityViolationException e){
+			throw new EntidadeEmUsoException("Não é possível deletar a empresa com id " + empresaId);
 		}
 	}
 

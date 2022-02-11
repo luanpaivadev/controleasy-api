@@ -1,9 +1,9 @@
 package br.com.app.controleasy.domain.service;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.app.controleasy.domain.exception.EntidadeNaoEncontradaException;
 import br.com.app.controleasy.domain.model.Ponto;
@@ -32,8 +32,13 @@ public class PontoService {
 	}
 
 	@Transactional
-	public void delete(Ponto ponto) {
-		pontoRepository.delete(ponto);
+	public void delete(Long pontoId) {
+		try {
+			pontoRepository.deleteById(pontoId);
+			pontoRepository.flush();
+		} catch (EmptyResultDataAccessException  e) {
+			throw new EntidadeNaoEncontradaException("Não existe um registro de ponto com id " + pontoId);
+		}
 	}
 
 }

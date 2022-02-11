@@ -1,4 +1,4 @@
-package br.com.app.controleasy.domain.exception;
+package br.com.app.controleasy.api.v1.exceptionhandler;
 
 public class NegocioException extends RuntimeException {
 

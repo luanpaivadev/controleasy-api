@@ -31,7 +31,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import br.com.app.controleasy.domain.exception.EntidadeEmUsoException;
 import br.com.app.controleasy.domain.exception.EntidadeNaoEncontradaException;
-import br.com.app.controleasy.domain.exception.NegocioException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {

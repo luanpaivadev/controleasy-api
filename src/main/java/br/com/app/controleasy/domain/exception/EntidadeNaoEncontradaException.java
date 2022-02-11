@@ -1,6 +1,6 @@
 package br.com.app.controleasy.domain.exception;
 
-public class EntidadeNaoEncontradaException extends NegocioException {
+public class EntidadeNaoEncontradaException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
