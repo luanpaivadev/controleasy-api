@@ -9,6 +9,9 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +29,7 @@ import br.com.app.controleasy.api.v1.model.dto.PontoDTO;
 import br.com.app.controleasy.api.v1.model.input.PontoInput;
 import br.com.app.controleasy.core.security.CheckSecurity;
 import br.com.app.controleasy.domain.exception.EntidadeNaoEncontradaException;
+import br.com.app.controleasy.domain.model.Ponto;
 import br.com.app.controleasy.domain.repository.PontoRepository;
 import br.com.app.controleasy.domain.service.PontoService;
 import io.swagger.annotations.Api;
@@ -56,11 +60,11 @@ public class PontoController {
 	@ApiOperation("Retorna uma lista com todos os registros de ponto")
 	@GetMapping
 	@CheckSecurity.Ponto.PodeConsultar
-	public ResponseEntity<List<PontoDTO>> findAll() {
-		var pontos = pontoRepository.findAll();
+	public ResponseEntity<Page<PontoDTO>> findAll(Pageable pageable) {
+		Page<Ponto> pontos = pontoRepository.findAll(pageable);
 		if (!pontos.isEmpty()) {
-			var pontosDTO = pontoDTOAssembler.toCollectionModel(pontos);
-			return ResponseEntity.ok(pontosDTO);
+			var pontosDTO = pontoDTOAssembler.toCollectionModel(pontos.getContent());
+			return ResponseEntity.ok(new PageImpl<>(pontosDTO, pageable, pontos.getTotalElements()));
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -145,7 +149,8 @@ public class PontoController {
 	@ApiOperation("Atualiza um registro de ponto com base no ID")
 	@PutMapping("/{pontoId}")
 	@CheckSecurity.Ponto.PodeAtualizar
-	public ResponseEntity<?> update(@ApiParam("ID do ponto") @PathVariable Long pontoId, @Valid @RequestBody PontoInput pontoInput) {
+	public ResponseEntity<?> update(@ApiParam("ID do ponto") @PathVariable Long pontoId,
+			@Valid @RequestBody PontoInput pontoInput) {
 		try {
 			var result = pontoRepository.findById(pontoId);
 			if (result.isPresent()) {

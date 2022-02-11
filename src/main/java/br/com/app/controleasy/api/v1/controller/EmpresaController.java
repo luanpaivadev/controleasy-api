@@ -1,10 +1,11 @@
 package br.com.app.controleasy.api.v1.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import br.com.app.controleasy.api.v1.assembler.EmpresaDTODisassembler;
 import br.com.app.controleasy.api.v1.model.dto.EmpresaDTO;
 import br.com.app.controleasy.api.v1.model.input.EmpresaInput;
 import br.com.app.controleasy.core.security.CheckSecurity;
+import br.com.app.controleasy.domain.model.Empresa;
 import br.com.app.controleasy.domain.repository.EmpresaRepository;
 import br.com.app.controleasy.domain.service.EmpresaService;
 import io.swagger.annotations.Api;
@@ -48,11 +50,11 @@ public class EmpresaController {
 	@ApiOperation("Retorna uma lista com todas as empresas cadastradas")
 	@GetMapping
 	@CheckSecurity.Empresa.PodeConsultar
-	public ResponseEntity<List<EmpresaDTO>> findAll() {
-		var empresas = empresaRepository.findAll();
+	public ResponseEntity<Page<EmpresaDTO>> findAll(Pageable pageable) {
+		Page<Empresa> empresas = empresaRepository.findAll(pageable);
 		if (!empresas.isEmpty()) {
-			var empresasDTO = empresaDTOAssembler.toCollectionModel(empresas);
-			return ResponseEntity.ok(empresasDTO);
+			var empresasDTO = empresaDTOAssembler.toCollectionModel(empresas.getContent());
+			return ResponseEntity.ok(new PageImpl<>(empresasDTO, pageable, empresas.getTotalElements()));
 		}
 		return ResponseEntity.notFound().build();
 	}

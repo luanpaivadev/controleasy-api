@@ -1,10 +1,11 @@
 package br.com.app.controleasy.api.v1.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,7 @@ import br.com.app.controleasy.api.v1.model.dto.FuncionarioDTO;
 import br.com.app.controleasy.api.v1.model.input.FuncionarioInput;
 import br.com.app.controleasy.core.security.CheckSecurity;
 import br.com.app.controleasy.domain.exception.EntidadeNaoEncontradaException;
+import br.com.app.controleasy.domain.model.Funcionario;
 import br.com.app.controleasy.domain.repository.FuncionarioRepository;
 import br.com.app.controleasy.domain.service.FuncionarioService;
 import io.swagger.annotations.Api;
@@ -52,11 +54,11 @@ public class FuncionarioController {
 	@ApiOperation("Retorna uma lista de todos os funcionários cadastrados")
 	@GetMapping
 	@CheckSecurity.Funcionario.PodeConsultar
-	public ResponseEntity<List<FuncionarioDTO>> findAll() {
-		var funcionarios = funcionarioRepository.findAll();
+	public ResponseEntity<Page<FuncionarioDTO>> findAll(Pageable pageable) {
+		Page<Funcionario> funcionarios = funcionarioRepository.findAll(pageable);
 		if (!funcionarios.isEmpty()) {
-			var funcionariosDTO = funcionarioDTOAssembler.toCollectionModel(funcionarios);
-			return ResponseEntity.ok(funcionariosDTO);
+			var funcionariosDTO = funcionarioDTOAssembler.toCollectionModel(funcionarios.getContent());
+			return ResponseEntity.ok(new PageImpl<>(funcionariosDTO, pageable, funcionarios.getTotalElements()));
 		}
 		return ResponseEntity.notFound().build();
 	}
