@@ -21,41 +21,37 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin().and()
-                .authorizeRequests().antMatchers("/oauth/**").authenticated().and()
-                .csrf().disable()
-                .cors().and()
-                .oauth2ResourceServer().jwt()
-                .jwtAuthenticationConverter(jwtAuthenticationConverter());
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.formLogin().loginPage("/login").and().authorizeRequests().antMatchers("/oauth/**").authenticated().and()
+				.csrf().disable().cors().and().oauth2ResourceServer().jwt()
+				.jwtAuthenticationConverter(jwtAuthenticationConverter());
+	}
 
-    private JwtAuthenticationConverter jwtAuthenticationConverter() {
-        var jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            var authorities = jwt.getClaimAsStringList("authorities");
+	private JwtAuthenticationConverter jwtAuthenticationConverter() {
+		var jwtAuthenticationConverter = new JwtAuthenticationConverter();
+		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
+			var authorities = jwt.getClaimAsStringList("authorities");
 
-            if (authorities == null) {
-                authorities = Collections.emptyList();
-            }
+			if (authorities == null) {
+				authorities = Collections.emptyList();
+			}
 
-            var scopesAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-            Collection<GrantedAuthority> grantedAuthorities = scopesAuthoritiesConverter.convert(jwt);
+			var scopesAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+			Collection<GrantedAuthority> grantedAuthorities = scopesAuthoritiesConverter.convert(jwt);
 
-            grantedAuthorities.addAll(authorities.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList()));
+			grantedAuthorities
+					.addAll(authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
-            return grantedAuthorities;
-        });
+			return grantedAuthorities;
+		});
 
-        return jwtAuthenticationConverter;
-    }
+		return jwtAuthenticationConverter;
+	}
 
-    @Bean
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
-    }
+	@Bean
+	protected AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager();
+	}
 
 }
