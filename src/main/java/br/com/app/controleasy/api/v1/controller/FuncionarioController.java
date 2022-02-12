@@ -28,11 +28,7 @@ import br.com.app.controleasy.domain.exception.EntidadeNaoEncontradaException;
 import br.com.app.controleasy.domain.model.Funcionario;
 import br.com.app.controleasy.domain.repository.FuncionarioRepository;
 import br.com.app.controleasy.domain.service.FuncionarioService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
-@Api(tags = "Funcionários")
 @RestController
 @RequestMapping("/v1/funcionarios")
 public class FuncionarioController {
@@ -52,7 +48,6 @@ public class FuncionarioController {
 	@Autowired
 	private PasswordEncoder encoder;
 
-	@ApiOperation("Retorna uma lista de todos os funcionários cadastrados")
 	@GetMapping
 	@CheckSecurity.Funcionario.PodeConsultar
 	public ResponseEntity<Page<FuncionarioDTO>> findAll(Pageable pageable) {
@@ -64,10 +59,9 @@ public class FuncionarioController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@ApiOperation("Retorna o cadastro do funcionário com base no ID")
 	@GetMapping("/{funcionarioId}")
 	@CheckSecurity.Funcionario.PodeConsultar
-	public ResponseEntity<FuncionarioDTO> findById(@ApiParam("ID do funcionário") @PathVariable Long funcionarioId) {
+	public ResponseEntity<FuncionarioDTO> findById(@PathVariable Long funcionarioId) {
 		var result = funcionarioRepository.findById(funcionarioId);
 		if (result.isPresent()) {
 			var funcionario = result.get();
@@ -77,7 +71,6 @@ public class FuncionarioController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@ApiOperation("Retorna o cadastro do funcionário autenticado pelo login")
 	@GetMapping("/login")
 	public ResponseEntity<FuncionarioDTO> login(final String cpf, final String senha) {
 		var result = funcionarioRepository.findByCpf(cpf);
@@ -92,7 +85,6 @@ public class FuncionarioController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@ApiOperation("Salva um novo registro de funcionário")
 	@PostMapping
 	@CheckSecurity.Funcionario.PodeCadastrar
 	public ResponseEntity<?> save(@RequestBody @Valid FuncionarioInput funcionarioInput) {
@@ -114,10 +106,9 @@ public class FuncionarioController {
 		}
 	}
 
-	@ApiOperation("Atualiza o cadastro do funcionário com base no ID")
 	@PutMapping("/{funcionarioId}")
 	@CheckSecurity.Funcionario.PodeAtualizar
-	public ResponseEntity<?> update(@ApiParam("ID do funcionário") @PathVariable Long funcionarioId,
+	public ResponseEntity<?> update(@PathVariable Long funcionarioId,
 			@Valid @RequestBody FuncionarioInput funcionarioInput) {
 		try {
 			var result = funcionarioRepository.findById(funcionarioId);
@@ -145,11 +136,10 @@ public class FuncionarioController {
 		}
 	}
 
-	@ApiOperation("Deleta o cadastro do funcionário com base no ID")
 	@DeleteMapping("/{funcionarioId}")
 	@CheckSecurity.Funcionario.PodeDeletar
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@ApiParam("ID do funcionário") @PathVariable Long funcionarioId) {
+	public void delete(@PathVariable Long funcionarioId) {
 		funcionarioService.delete(funcionarioId);
 	}
 
