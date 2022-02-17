@@ -24,5 +24,6 @@ public class FuncionarioDTO {
 	private LocalTime fimIntervalo;
 	private LocalTime saida;
 	private LocalTime cargaHoraria;
+	private String grupo;
 	private EmpresaDTO empresa;
 }

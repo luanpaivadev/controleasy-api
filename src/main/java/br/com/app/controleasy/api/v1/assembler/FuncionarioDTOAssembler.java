@@ -17,7 +17,9 @@ public class FuncionarioDTOAssembler {
 	private ModelMapper modelMapper;
 
 	public FuncionarioDTO toModel(Funcionario funcionario) {
-		return modelMapper.map(funcionario, FuncionarioDTO.class);
+		FuncionarioDTO funcionarioDTO = modelMapper.map(funcionario, FuncionarioDTO.class);
+		funcionarioDTO.setGrupo(funcionario.getGrupos().stream().collect(Collectors.toList()).get(0).getNome());
+		return funcionarioDTO;
 	}
 
 	public List<FuncionarioDTO> toCollectionModel(List<Funcionario> funcionarios) {
